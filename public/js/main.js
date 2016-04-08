@@ -29,6 +29,6 @@ angular.module('Soshace', [])
 		
 		$scope.adminLogin =function(admin){
 			alert(admin.password);
-			$scope.adminLoggedIn =true;
+			$scope.adminLoggedIn =true; 
 		};
 	});

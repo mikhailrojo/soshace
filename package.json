@@ -4,8 +4,16 @@
   "description": "Soshace homework",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
   },
   "author": "Mikhail Stepanov",
-  "license": "MIT"
+  "repository":{
+	  "type": "git",
+	  "url": "https://github.com/mikhailrojo/soshace.git"
+  }
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.13.4"
+  }
 }

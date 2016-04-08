@@ -12,9 +12,16 @@ angular.module('Soshace', [])
 		}
 		
 		$scope.adminLogin =function(admin){
+			var login = admin.name;
 			var password = admin.password; 
-			$http.get('/login/:password').success(function(data){
+			//зашифровать пароли
+			$http.post('/login', {"login":login, "password":password}).success(function(data){
 				console.log(data);
+				if(data === "ok"){
+					$scope.adminLoggedIn = true;
+				} else{
+					$scope.adminLoggedIn = false;
+				}
 			});
 		};
 	});

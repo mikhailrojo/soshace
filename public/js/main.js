@@ -4,15 +4,17 @@ angular.module('Soshace', [])
 		
 	
 		$http.get('/getData').success(function(data){
-			$scope.candidates = data;
+			$scope.candidates = data.data;
+			if(data.auth === "nikita"){
+				$scope.adminLoggedIn = true;
+			}			
 		});	
 		
 		$scope.deleteCandidate = function(id){
 			$http.delete('/deleteCandidate/' + id).success(function(data){
-				console.log('Кандидат удален');
 				$scope.candidates = data;
 			});	
-		};
+		}
 		
 		$scope.newCandidate = function(form){
 			console.log(form);
@@ -21,7 +23,12 @@ angular.module('Soshace', [])
 			});
 		}
 		
-		$scope.editCandidate = function(person, form){
+		$scope.cancelIditing= function(){
+			$scope.redakciya = false;
+			$scope.form = {};
+		}
+		
+		$scope.editCandidateInForm = function(person){
 			$scope.redakciya = true;
 			$scope.form = {name :person.name, place: person.place, time: person.time, _id: person._id};
 			console.log($scope.form);
@@ -32,28 +39,33 @@ angular.module('Soshace', [])
 			console.log(form);
 			$http.put('/editCandidate', form).success(function(data){
 				$scope.candidates = data;
-				console.log('отредактировано');
 				$scope.redakciya = false;
 				$scope.hideSubmit = false;
 			});
 		}
-	
-				
-		$scope.submitData = function(){
-			alert('Данные получены');
+		
+		$scope.logOut = function(){
+			$scope.adminLoggedIn = false;
+			$http.post('/logOut').success(function(data){
+				console.log(data);
+			});
 		}
+	
 		
 		$scope.adminLogin =function(admin){
 			var login = admin.name;
 			var password = admin.password; 
-			//зашифровать пароли
+			$scope.admin = {};
+
 			$http.post('/login', {"login":login, "password":password}).success(function(data){
 				console.log(data);
 				if(data === "ok"){
 					$scope.adminLoggedIn = true;
+					
 				} else{
 					$scope.adminLoggedIn = false;
 				}
 			});
 		};
 	});
+

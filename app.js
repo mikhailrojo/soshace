@@ -5,6 +5,7 @@ Candidates = require('./model/candidates.model.js'),
 port = (process.env.PORT || 8080),
 mongoose = require('mongoose'),
 bodyParser = require('body-parser'),
+cookieParser = require('cookie-parser'),
 mongoURI = 'mongodb://soshace:soshace@ds017070.mlab.com:17070/soshace';
 
 mongoose.connect(mongoURI, function(err, data){
@@ -12,15 +13,18 @@ mongoose.connect(mongoURI, function(err, data){
 	else console.log('К базе подключились!!');
 })
 app.use(bodyParser.json());
-//app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.listen(port, function(){
 	console.log("Слушаем порт");
 });
 
 app.post('/login', function(req, res){
-	console.log(req.body);
+	console.log(req.cookies);
 	if(req.body.login == 'admin' && req.body.password == 'admin'){
+		if(req.cookies.aproved != 'nikita'){
+			res.cookie('aproved', 'nikita', {maxAge: 900000, httpOnly: true});
+		}
 		res.send('ok');
 	} else {
 		res.send('bad');
@@ -28,9 +32,24 @@ app.post('/login', function(req, res){
 
 });
 
+app.post('/logOut', function(req, res){
+	res.cookie('aproved', '123a', {maxAge: 900000, httpOnly: true});
+	res.send('');
+	
+});
+
 app.get('/getData', function(req, res){
+	var sendingObject = {};
 	Candidates.find(function(err, data){
-		res.status(200).json(data);
+		if(err) {
+				console.log(err);
+				}else {
+					sendingObject.data = data;
+					if(req.cookies.aproved == 'nikita'){
+						sendingObject.auth = 'nikita';
+					}
+					res.status(200).send(sendingObject);
+				}
 	});
 });
 

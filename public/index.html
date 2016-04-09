@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="css/main.css">
     </head>
-    <body ng-controller="mainCtrl">
+    <body ng-controller="mainCtrl" ng-cloak>
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -32,19 +32,23 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <form class="navbar-form navbar-right" role="form">
-            <div class="form-group">
+            <div class="form-group" ng-show="!adminLoggedIn">
               <input type="text" placeholder="логин" class="form-control" ng-model="admin.name">
             </div>
-            <div class="form-group">
+            <div class="form-group" ng-show="!adminLoggedIn">
               <input type="password" placeholder="пароль" class="form-control" ng-model="admin.password">
             </div>
-            <button type="submit" class="btn btn-success" ng-click="adminLogin(admin); admin = {}">Зайти</button>
+            <button ng-show="!adminLoggedIn" type="submit" class="btn btn-success" ng-click="adminLogin(admin)">Зайти</button>
+            <button ng-show="adminLoggedIn" type="submit" class="btn btn-success" ng-click="logOut()">Выйти</button>
           </form>
         </div><!--/.navbar-collapse -->
       </div>
     </nav>
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
+    
+   <div class="alert alert-warning" ng-show="adminLoggedIn">
+   	Добро пожаловать, Никита!
+   </div> 
+   
     <div class="jumbotron" ng-hide="redakciya">
       <div class="container">
        	<table class="table table-hover" >
@@ -53,19 +57,19 @@
 	       		<th>ФИО</th>
 	       		<th>Время</th>
 	       		<th>Место</th>
-	       		<th>Дополнительно</th>
+	       		<th ng-show="adminLoggedIn">Дополнительно</th>
        		</tr>
        		<tr ng-repeat="person in candidates">
        			<td>{{$index+1}}</td>
 	       		<td>{{person.name}}</td>
 	       		<td>{{person.time}}</td>
 	       		<td>{{person.place}}</td>
-	       		<td><button ng-click="editCandidate(person, form); " class="btn btn-info">редактировать</button><button ng-click="deleteCandidate(person._id)" class="btn btn-danger">удалить</button></td>
+	       		<td ng-show="adminLoggedIn"><button ng-click="editCandidateInForm(person); " class="btn btn-info">редактировать</button><button ng-click="deleteCandidate(person._id)" class="btn btn-danger">удалить</button></td>
        		</tr>
        	</table>
       </div>
     </div>
-    <div class="container" ng-show="!adminLoggedIn">
+    <div class="container" ng-show="adminLoggedIn">
     	<div class="row">
     		<div class="col-md-5">
 		    	<form>
@@ -84,6 +88,7 @@
 		    		<input type="hidden" ng-model="form._id">
 		    		<button ng-hide="hideSubmit" class="btn btn-defaul" type="submit" ng-click="newCandidate(form); form={}">Записать</button>
 		    		<button ng-hide="!hideSubmit" class="btn btn-info" type="submit" ng-click="editCandidate(form); form={}">Отредактировать</button>
+		    		<button ng-hide="!hideSubmit" class="btn btn-info" type="submit" ng-click="cancelIditing()">Отменить редакцию</button>
 		    	</form>
 		    </div>
     	</div>
@@ -97,9 +102,6 @@
 
       <footer>
         <p>&copy; Soshace 2016</p>
-        <div class="well">
-        Загрузка : {{DD}} !
-        </div>
       </footer>
     </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>

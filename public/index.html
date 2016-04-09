@@ -33,47 +33,50 @@
           <a class="navbar-brand" href="#" ng-click="cancelIditing()">Собеседования в Soshace</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right" role="form">
+          <form id="loginForm" class="navbar-form navbar-right" role="form" novalidate>
             <div class="form-group" ng-show="!adminLoggedIn">
-              <input type="text" placeholder="логин" class="form-control" ng-model="admin.name">
+              <input type="text" placeholder="логин" class="form-control" ng-model="admin.name" ng-required="true">
             </div>
             <div class="form-group" ng-show="!adminLoggedIn">
-              <input type="password" placeholder="пароль" class="form-control" ng-model="admin.password">
+              <input type="password" placeholder="пароль" class="form-control" ng-model="admin.password" ng-required="true">
             </div>
-            <button ng-show="!adminLoggedIn" type="submit" class="btn btn-success" ng-click="adminLogin(admin)">Зайти</button>
+            <button ng-show="!adminLoggedIn" type="submit" class="btn btn-success" ng-click="adminLogin(admin)" ng-disabled="loginForm.$invalid">Зайти</button>
             <button ng-show="adminLoggedIn" type="submit" class="btn btn-success" ng-click="logOut()">Выйти</button>
           </form>
         </div><!--/.navbar-collapse -->
       </div>
     </nav>
     
-   <div class="alert alert-warning cssFade" ng-show="adminLoggedIn" id="alert">
+   <div class="alert alert-warning cssFade" ng-show="welcome" id="alert">
    	Добро пожаловать, Никита!
    </div> 
+    <div class="alert alert-warning cssFade" ng-show="wrongPassword" id="alert2" >
+   	Неправильный логин и пароль
+   </div> 
    
-    <div class="jumbotron cssFade" ng-hide="redakciya">
-      <div class="container">
-       	<table class="table table-hover" >
-       		<tr>
-       			<th>№</th>
-	       		<th>ФИО</th>
-	       		<th>Время</th>
-	       		<th>Место</th>
-	       		<th ng-show="adminLoggedIn">Дополнительно</th>
-       		</tr>
-       		<tr ng-repeat="person in candidates">
-       			<td>{{$index+1}}</td>
-	       		<td>{{person.name}}</td>
-	       		<td>{{person.time}}</td>
-	       		<td>{{person.place}}</td>
-	       		<td ng-show="adminLoggedIn"><button ng-click="editCandidateInForm(person); " class="btn btn-info">редактировать</button><button ng-click="deleteCandidate(person._id)" class="btn btn-danger">удалить</button></td>
-       		</tr>
-       	</table>
-      </div>
-    </div>
-    <div class="container" ng-show="adminLoggedIn">
-    	<div class="row">
-    		<div class="col-md-5">
+    <div class="container">
+      <div class="row">
+      	<div class="col-md-8 cssFade" ng-hide="redakciya">
+	       	<table class="table table-hover" >
+	       		<tr>
+	       			<th>№</th>
+		       		<th>ФИО</th>
+		       		<th>Время</th>
+		       		<th>Место</th>
+		       		<th ng-show="adminLoggedIn">Дополнительно</th>
+	       		</tr>
+	       		<tr ng-repeat="person in candidates">
+	       			<td>{{$index+1}}</td>
+		       		<td>{{person.name}}</td>
+		       		<td>{{person.time}}</td>
+		       		<td>{{person.place}}</td>
+		       		<td ng-show="adminLoggedIn"><button ng-click="editCandidateInForm(person); " class="btn btn-info">редактировать</button><button ng-click="deleteCandidate(person._id)" class="btn btn-danger">удалить</button></td>
+	       		</tr>
+	       	</table>
+      	</div><!-- col-md-8 -->
+      	
+      	<div class="col-md-4 well" ng-show="adminLoggedIn">
+      		
 		    	<form>
 		    		<div class="form-group">
 				    	<label for="name">Имя нового кандидата</label>
@@ -92,9 +95,16 @@
 		    		<button ng-hide="!hideSubmit" class="btn btn-info" type="submit" ng-click="editCandidate(form); form={}">Отредактировать</button>
 		    		<button ng-hide="!hideSubmit" class="btn btn-info" type="submit" ng-click="cancelIditing()">Отменить редакцию</button>
 		    	</form>
-		    </div>
-    	</div>
-    </div>
+		    </div><!-- col-md-4 -->
+
+      	
+      	
+      	
+      	
+      </div><!-- row -->
+    </div><!-- container -->
+    
+
 
   
      
@@ -103,7 +113,7 @@
       <hr>
 
       <footer>
-        <p>&copy; Soshace 2016</p>
+        <p>&copy; Soshace 2016   <div>Valid: {{myForm.$valid}}</div> </p>
       </footer>
     </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>

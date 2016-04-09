@@ -1,19 +1,21 @@
 angular.module('Soshace', ['ngAnimate'])
 	.controller('mainCtrl', function($scope, $http){
 	
-		
+		$scope.wrongPassword = false;
+		$scope.welcome= false;
 	
 		$http.get('/getData').success(function(data){
 			$scope.candidates = data.data;
 			if(data.auth === "nikita"){
 				$scope.adminLoggedIn = true;
-				setTimeout(hide, 2000);
+				
 			}			
 		});	
 		
 		$scope.deleteCandidate = function(id){
 			$http.delete('/deleteCandidate/' + id).success(function(data){
 				$scope.candidates = data;
+				$scope.$apply();
 			});	
 		}
 		
@@ -21,6 +23,7 @@ angular.module('Soshace', ['ngAnimate'])
 			console.log(form);
 			$http.post('/newCandidate', form).success(function(data){
 				$scope.candidates = data;
+				$scope.$apply();
 			});
 		}
 		
@@ -43,6 +46,7 @@ angular.module('Soshace', ['ngAnimate'])
 				$scope.candidates = data;
 				$scope.redakciya = false;
 				$scope.hideSubmit = false;
+				$scope.$apply();
 			});
 		}
 		
@@ -63,9 +67,23 @@ angular.module('Soshace', ['ngAnimate'])
 				console.log(data);
 				if(data === "ok"){
 					$scope.adminLoggedIn = true;
+					$scope.wrongPassword = false;
+					$scope.welcome = true;
 					
+					setTimeout(function(){
+						$scope.welcome = false;
+						$scope.$apply();
+					}, 2000);
 				} else{
+					$scope.wrongPassword = true;
 					$scope.adminLoggedIn = false;
+					console.log("Неверный пароль");
+					
+					setTimeout(function(){
+						$scope.wrongPassword = false;
+						$scope.$apply();
+					}, 2000);
+					
 				}
 			});
 		};

@@ -1,4 +1,4 @@
-angular.module('Soshace', [])
+angular.module('Soshace', ['ngAnimate'])
 	.controller('mainCtrl', function($scope, $http){
 	
 		
@@ -7,6 +7,7 @@ angular.module('Soshace', [])
 			$scope.candidates = data.data;
 			if(data.auth === "nikita"){
 				$scope.adminLoggedIn = true;
+				setTimeout(hide, 2000);
 			}			
 		});	
 		
@@ -26,6 +27,7 @@ angular.module('Soshace', [])
 		$scope.cancelIditing= function(){
 			$scope.redakciya = false;
 			$scope.form = {};
+			$scope.hideSubmit = false;
 		}
 		
 		$scope.editCandidateInForm = function(person){

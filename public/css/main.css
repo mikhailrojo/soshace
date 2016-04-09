@@ -1,16 +1,23 @@
+.ng-hide-add, .ng-hide-remove {
+    display: block !important; 
+}
+
+.cssFade {
+    transition: .3s linear all;
+    opacity: 1;
+}
+.cssFade.ng-hide {
+    opacity: 0;
+}
 
 
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
+.cssSlideUp {
+    transition: 1s linear all;
 
-
-
-
-
-
-
-
+}
+.cssSlideUp.ng-hide {
+    height:0;
+}
 
 
 

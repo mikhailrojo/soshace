@@ -45,7 +45,7 @@
     </nav>
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
+    <div class="jumbotron" ng-hide="redakciya">
       <div class="container">
        	<table class="table table-hover" >
        		<tr>
@@ -60,7 +60,7 @@
 	       		<td>{{person.name}}</td>
 	       		<td>{{person.time}}</td>
 	       		<td>{{person.place}}</td>
-	       		<td><button class="btn btn-info">редактировать</button><button ng-click="deleteUser(person._id)" class="btn btn-danger">удалить</button></td>
+	       		<td><button ng-click="editCandidate(person, form); " class="btn btn-info">редактировать</button><button ng-click="deleteCandidate(person._id)" class="btn btn-danger">удалить</button></td>
        		</tr>
        	</table>
       </div>
@@ -81,7 +81,9 @@
 				    	<label for="place">Место</label>
 				    	<input id="place" name="name" type="text" class="form-control" ng-model="form.place">
 		    		</div>
-		    		<button class="btn btn-defaul" type="submit" ng-click="newCandidate(form); form={}">Записать</button>
+		    		<input type="hidden" ng-model="form._id">
+		    		<button ng-hide="hideSubmit" class="btn btn-defaul" type="submit" ng-click="newCandidate(form); form={}">Записать</button>
+		    		<button ng-hide="!hideSubmit" class="btn btn-info" type="submit" ng-click="editCandidate(form); form={}">Отредактировать</button>
 		    	</form>
 		    </div>
     	</div>

@@ -46,6 +46,17 @@ app.post('/newCandidate', function(req, res){
 	
 });
 
+app.put('/editCandidate', function(req, res){
+	var requestId = req.body._id;
+	Candidates.findOneAndUpdate({_id: requestId}, {name: req.body.name, place: req.body.place, time:req.body.time}, function(err, data){
+		Candidates.find(function(err, data){
+			res.status(200).json(data);
+		});
+	});
+
+});
+
+
 app.delete('/deleteCandidate/:id', function(req, res){
 	console.log(req.params.id);
 	Candidates.remove({_id : req.params.id}, function(err){

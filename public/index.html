@@ -49,21 +49,23 @@
       <div class="container">
        	<table class="table table-hover" >
        		<tr>
+       			<th>№</th>
 	       		<th>ФИО</th>
 	       		<th>Время</th>
 	       		<th>Место</th>
 	       		<th>Дополнительно</th>
        		</tr>
        		<tr ng-repeat="person in candidates">
+       			<td>{{$index+1}}</td>
 	       		<td>{{person.name}}</td>
 	       		<td>{{person.time}}</td>
 	       		<td>{{person.place}}</td>
-	       		<td></td>
+	       		<td><button class="btn btn-info">редактировать</button><button ng-click="deleteUser(person._id)" class="btn btn-danger">удалить</button></td>
        		</tr>
        	</table>
       </div>
     </div>
-    <div class="container" ng-show="adminLoggedIn">
+    <div class="container" ng-show="!adminLoggedIn">
     	<div class="row">
     		<div class="col-md-5">
 		    	<form>
@@ -79,7 +81,7 @@
 				    	<label for="place">Место</label>
 				    	<input id="place" name="name" type="text" class="form-control" ng-model="form.place">
 		    		</div>
-		    		<button class="btn btn-defaul" type="submit" ng-click="submitData(); form={}">Записать</button>
+		    		<button class="btn btn-defaul" type="submit" ng-click="newCandidate(form); form={}">Записать</button>
 		    	</form>
 		    </div>
     	</div>

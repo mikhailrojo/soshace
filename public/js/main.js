@@ -5,6 +5,20 @@ angular.module('Soshace', [])
 		$http.get('/getData').success(function(data){
 			$scope.candidates = data;
 		});	
+		
+		$scope.deleteUser = function(id){
+			$http.delete('/deleteCandidate/' + id).success(function(data){
+				console.log('Кандидат удален');
+				$scope.candidates = data;
+			});	
+		};
+		
+		$scope.newCandidate = function(form){
+			console.log(form);
+			$http.post('/newCandidate', form).success(function(data){
+				$scope.candidates = data;
+			});
+		}
 	
 				
 		$scope.submitData = function(){

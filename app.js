@@ -33,3 +33,25 @@ app.get('/getData', function(req, res){
 		res.status(200).json(data);
 	});
 });
+
+app.post('/newCandidate', function(req, res){
+	console.log(req.body);
+	var newCandidate = new Candidates(req.body);
+	newCandidate.save(function(err){
+		if(err)console.log(err);
+	})
+	Candidates.find(function(err, data){
+		res.status(200).json(data);
+	});
+	
+});
+
+app.delete('/deleteCandidate/:id', function(req, res){
+	console.log(req.params.id);
+	Candidates.remove({_id : req.params.id}, function(err){
+		if (err) console.log(err);
+	});
+	Candidates.find(function(err, data){
+		res.status(200).json(data);
+	});
+});

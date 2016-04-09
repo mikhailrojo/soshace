@@ -20,11 +20,13 @@ angular.module('Soshace', ['ngAnimate'])
 		}
 		
 		$scope.newCandidate = function(form){
-			console.log(form);
-			$http.post('/newCandidate', form).success(function(data){
+			if(angular.isDefined(form.name)){
+				$http.post('/newCandidate', form).success(function(data){
 				$scope.candidates = data;
 				$scope.$apply();
-			});
+				});
+			}
+			
 		}
 		
 		$scope.cancelIditing= function(){

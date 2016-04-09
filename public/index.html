@@ -33,7 +33,7 @@
           <a class="navbar-brand" href="#" ng-click="cancelIditing()">Собеседования в Soshace</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <form id="loginForm" class="navbar-form navbar-right" role="form" novalidate>
+          <form name="loginForm" class="navbar-form navbar-right" role="form" novalidate>
             <div class="form-group" ng-show="!adminLoggedIn">
               <input type="text" placeholder="логин" class="form-control" ng-model="admin.name" ng-required="true">
             </div>
@@ -77,21 +77,21 @@
       	
       	<div class="col-md-4 well" ng-show="adminLoggedIn">
       		
-		    	<form>
+		    	<form name="newForm">
 		    		<div class="form-group">
 				    	<label for="name">Имя нового кандидата</label>
-				    	<input id="name" name="name" type="text" class="form-control" ng-model="form.name">
+				    	<input id="name" name="name" type="text" class="form-control" ng-model="form.name" ng-required="true">
 		    		</div>
 		    		<div class="form-group">
 				    	<label for="time">Время</label>
-				    	<input id="time" name="name" type="text" class="form-control" ng-model="form.time">
+				    	<input id="time" name="name" type="text" class="form-control" ng-model="form.time" ng-required="true">
 		    		</div>
 		    		<div class="form-group">
 				    	<label for="place">Место</label>
-				    	<input id="place" name="name" type="text" class="form-control" ng-model="form.place">
+				    	<input id="place" name="name" type="text" class="form-control" ng-model="form.place" ng-required="true">
 		    		</div>
 		    		<input type="hidden" ng-model="form._id">
-		    		<button ng-hide="hideSubmit" class="btn btn-defaul" type="submit" ng-click="newCandidate(form); form={}">Записать</button>
+		    		<button ng-hide="hideSubmit" class="btn btn-defaul" type="submit" ng-disabled="newForm.$invalid" ng-click="newCandidate(form); form={}">Записать</button>
 		    		<button ng-hide="!hideSubmit" class="btn btn-info" type="submit" ng-click="editCandidate(form); form={}">Отредактировать</button>
 		    		<button ng-hide="!hideSubmit" class="btn btn-info" type="submit" ng-click="cancelIditing()">Отменить редакцию</button>
 		    	</form>
@@ -113,7 +113,7 @@
       <hr>
 
       <footer>
-        <p>&copy; Soshace 2016   <div>Valid: {{myForm.$valid}}</div> </p>
+        <p>&copy; Soshace 2016   <div>Valid: {{newForm.name.$error.required}}</div> </p>
       </footer>
     </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.2.min.js"><\/script>')</script>

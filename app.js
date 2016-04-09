@@ -30,7 +30,7 @@ app.post('/login', function(req, res){
 		res.send('bad');
 	}
 
-});
+}); 
 
 app.post('/logOut', function(req, res){
 	res.cookie('aproved', '123a', {maxAge: 900000, httpOnly: true});

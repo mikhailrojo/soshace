@@ -1,8 +1,20 @@
 angular.module('Soshace', ['ngAnimate'])
 	.controller('mainCtrl', function($scope, $http){
 	
-		$scope.wrongPassword = false;
-		$scope.welcome= false;
+		function showAlert(message){
+			document.getElementById("alert").innerHTML=message;
+			$scope.alertMessage = true;
+			setTimeout(function(){
+						$scope.alertMessage = false;
+						$scope.$apply();
+					}, 2000);
+		}
+		
+		function updateTable(data){
+			setTimeout(function(){
+				$scope.candidates = data;
+			}, 500);
+		}
 	
 		$http.get('/getData').success(function(data){
 			$scope.candidates = data.data;
@@ -14,17 +26,18 @@ angular.module('Soshace', ['ngAnimate'])
 		
 		$scope.deleteCandidate = function(id){
 			$http.delete('/deleteCandidate/' + id).success(function(data){
-				$scope.candidates = data;
-				$scope.$apply();
+				showAlert("Выбранный кандидат удален из таблицы!");
+				updateTable(data);	
 			});	
 		}
 		
 		$scope.newCandidate = function(form){
 			if(angular.isDefined(form.name)){
 				$http.post('/newCandidate', form).success(function(data){
-				$scope.candidates = data;
-				$scope.$apply();
+				showAlert("Новый кандидат добавлен в таблицу");
+				updateTable(data);	
 				});
+			
 			}
 			
 		}
@@ -33,29 +46,28 @@ angular.module('Soshace', ['ngAnimate'])
 			$scope.redakciya = false;
 			$scope.form = {};
 			$scope.hideSubmit = false;
+			showAlert("Редактирование отменено");
 		}
 		
 		$scope.editCandidateInForm = function(person){
 			$scope.redakciya = true;
 			$scope.form = {name :person.name, place: person.place, time: person.time, _id: person._id};
-			console.log($scope.form);
 			$scope.hideSubmit = true;
 		}
 		
 		$scope.editCandidate = function(form){
-			console.log(form);
+			
 			$http.put('/editCandidate', form).success(function(data){
 				$scope.candidates = data;
 				$scope.redakciya = false;
 				$scope.hideSubmit = false;
-				$scope.$apply();
+				showAlert("Редактирование кандидата завершено");
 			});
 		}
 		
 		$scope.logOut = function(){
 			$scope.adminLoggedIn = false;
 			$http.post('/logOut').success(function(data){
-				console.log(data);
 			});
 		}
 	
@@ -66,26 +78,13 @@ angular.module('Soshace', ['ngAnimate'])
 			$scope.admin = {};
 
 			$http.post('/login', {"login":login, "password":password}).success(function(data){
-				console.log(data);
 				if(data === "ok"){
 					$scope.adminLoggedIn = true;
-					$scope.wrongPassword = false;
-					$scope.welcome = true;
+					showAlert('Доброе пожаловать, Никита');
 					
-					setTimeout(function(){
-						$scope.welcome = false;
-						$scope.$apply();
-					}, 2000);
 				} else{
-					$scope.wrongPassword = true;
 					$scope.adminLoggedIn = false;
-					console.log("Неверный пароль");
-					
-					setTimeout(function(){
-						$scope.wrongPassword = false;
-						$scope.$apply();
-					}, 2000);
-					
+					showAlert('Неверный пароль');
 				}
 			});
 		};

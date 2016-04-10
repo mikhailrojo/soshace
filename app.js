@@ -60,7 +60,7 @@ app.post('/newCandidate', function(req, res){
 		if(err)console.log(err);
 	})
 	Candidates.find(function(err, data){
-		res.status(200).json(data);
+		res.send(data);
 	});
 	
 });

@@ -60,6 +60,7 @@ angular.module('Soshace', ['ngAnimate'])
 		$scope.logOut = function(){
 			$scope.adminLoggedIn = false;
 			$http.post('/logOut').success(function(data){
+				showAlert('Вы разлогинились. Пока');
 			});
 		}
 	
@@ -73,7 +74,6 @@ angular.module('Soshace', ['ngAnimate'])
 				if(data === "ok"){
 					$scope.adminLoggedIn = true;
 					showAlert('Доброе пожаловать, Никита');
-					
 				} else{
 					$scope.adminLoggedIn = false;
 					showAlert('Неверный пароль');

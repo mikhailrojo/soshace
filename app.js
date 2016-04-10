@@ -25,7 +25,9 @@ app.post('/login', function(req, res){
 			res.cookie('aproved', 'nikita', {maxAge: 900000, httpOnly: true});
 		}
 		res.send('ok');
-	} 
+	} else{
+		res.send('Wrong password');
+	}
 }); 
 
 app.post('/logOut', function(req, res){

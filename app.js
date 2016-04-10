@@ -10,7 +10,7 @@ mongoURI = 'mongodb://soshace:soshace@ds017070.mlab.com:17070/soshace';
 
 mongoose.connect(mongoURI, function(err, data){
 	if(err)console.log(err);
-	else console.log('К базе подключились!!');
+	else console.log('К базе подключились');
 })
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -20,16 +20,12 @@ app.listen(port, function(){
 });
 
 app.post('/login', function(req, res){
-	console.log(req.cookies);
 	if(req.body.login == 'admin' && req.body.password == 'admin'){
 		if(req.cookies.aproved != 'nikita'){
 			res.cookie('aproved', 'nikita', {maxAge: 900000, httpOnly: true});
 		}
 		res.send('ok');
-	} else {
-		res.send('bad');
-	}
-
+	} 
 }); 
 
 app.post('/logOut', function(req, res){
@@ -54,14 +50,17 @@ app.get('/getData', function(req, res){
 });
 
 app.post('/newCandidate', function(req, res){
-	console.log(req.body);
 	var newCandidate = new Candidates(req.body);
 	newCandidate.save(function(err){
-		if(err)console.log(err);
+		if(err){
+			console.log(err);
+			}else{
+				Candidates.find(function(err, data){
+					res.send(data);
+				});
+		}
+		
 	})
-	Candidates.find(function(err, data){
-		res.send(data);
-	});
 	
 });
 
@@ -77,11 +76,14 @@ app.put('/editCandidate', function(req, res){
 
 
 app.delete('/deleteCandidate/:id', function(req, res){
-	console.log(req.params.id);
 	Candidates.remove({_id : req.params.id}, function(err){
-		if (err) console.log(err);
+		if (err){
+			console.log(err);
+		}else{
+			Candidates.find(function(err, data){
+				res.status(200).json(data);
+			});
+		}
 	});
-	Candidates.find(function(err, data){
-		res.status(200).json(data);
-	});
+	
 });

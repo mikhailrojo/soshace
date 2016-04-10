@@ -9,36 +9,28 @@ angular.module('Soshace', ['ngAnimate'])
 						$scope.$apply();
 					}, 2000);
 		}
-		
-		function updateTable(data){
-			setTimeout(function(){
-				$scope.candidates = data;
-			}, 500);
-		}
 	
 		$http.get('/getData').success(function(data){
 			$scope.candidates = data.data;
 			if(data.auth === "nikita"){
 				$scope.adminLoggedIn = true;
-				
-			}			
+				}			
 		});	
 		
 		$scope.deleteCandidate = function(id){
 			$http.delete('/deleteCandidate/' + id).success(function(data){
 				showAlert("Выбранный кандидат удален из таблицы!");
-				updateTable(data);	
+				$scope.candidates= data;
 			});	
 		}
 		
 		$scope.newCandidate = function(form){
-			if(angular.isDefined(form.name)){
 				$http.post('/newCandidate', form).success(function(data){
 				showAlert("Новый кандидат добавлен в таблицу");
-				updateTable(data);	
+				$scope.candidates = data;
 				});
 			
-			}
+			
 			
 		}
 		

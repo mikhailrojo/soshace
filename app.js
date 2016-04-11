@@ -1,12 +1,12 @@
 var express = require('express'),
-path = require('path'),
-app = express(),
-Candidates = require('./model/candidates.model.js'),
-port = (process.env.PORT || 8080),
-mongoose = require('mongoose'),
-bodyParser = require('body-parser'),
-cookieParser = require('cookie-parser'),
-mongoURI = 'mongodb://soshace:soshace@ds017070.mlab.com:17070/soshace';
+	path = require('path'),
+	app = express(),
+	Candidates = require('./model/candidates.model.js'),
+	port = (process.env.PORT || 8080),
+	mongoose = require('mongoose'),
+	bodyParser = require('body-parser'),
+	cookieParser = require('cookie-parser'),
+	mongoURI = 'mongodb://soshace:soshace@ds017070.mlab.com:17070/soshace';
 
 mongoose.connect(mongoURI, function(err, data){
 	if(err)console.log(err);
